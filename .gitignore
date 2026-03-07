@@ -1,0 +1,16 @@
+# 排除所有的 PPT/PPTX 文件
+*.ppt
+*.pptx
+~$*.ppt*
+
+# 排除 Python 编译缓存和虚拟环境
+__pycache__/
+*.py[cod]
+.venv/
+env/
+venv/
+
+# 排除你的 API 密钥文件 (保护隐私，不要上传到 GitHub/GitLab)
+kernel/api.json
+
+
