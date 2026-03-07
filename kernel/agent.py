@@ -8,9 +8,9 @@ from IPython.display import Image, display
 
 from langchain_openai import ChatOpenAI
 from langchain.tools import tool
-from langgraph.graph import MessagesState, StateGraph, START, END
 from langchain_core.messages import SystemMessage, ToolMessage, HumanMessage
-
+from langgraph.graph import MessagesState, StateGraph, START, END
+from langgraph.checkpoint.memory import MemorySaver #暂时保存在内存中
 
 # 获取指定模型的api
 def api_get(model_name):
@@ -117,6 +117,8 @@ def decider_function(state:GraphState):
         return "end"
 
 ## Graph
+# =====短期记忆暂时保存在内存中=====
+shortMemory = MemorySaver() 
 Amadeus_builder = StateGraph(GraphState)
 Amadeus_builder.add_node("amadeus_kernel", amadeus_node)
 Amadeus_builder.add_node("tool", tool_node)
@@ -130,20 +132,31 @@ Amadeus_builder.add_conditional_edges(
     }
 )
 Amadeus_builder.add_edge("tool", "amadeus_kernel")
-Amadeus = Amadeus_builder.compile()
+Amadeus = Amadeus_builder.compile(checkpointer=shortMemory)
 ### 展示执行图
 # display(Image(Amadeus.get_graph(xray=True).draw_mermaid_png()))
 # current_file = os.path.dirname(__file__)
 # graph_location = os.path.join(current_file, "graph.png")
 # with open(graph_location, "wb") as f:
 #     f.write(Amadeus.get_graph(xray=True).draw_mermaid_png())
+if __name__ == "__main__":
+    # message = HumanMessage(content="你好，你是谁，你知道我现在在干什么吗?可以截屏查看哦。")
+    # result = Amadeus.invoke({
+    #     "messages":[message]
+    # })
+    print("请输入问题，输入“晚安”结束对话")
+    question = "你好，你是谁？你知道我正在做什么吗？"
+    while question != "晚安":
+        message = {"role":"user", "content":question}
+        result = Amadeus.invoke(
+            {"messages":[message]},
+            {"configurable":{"thread_id":"lab_test"}}
+        )
+        print("="*10+"Amadeus message"+"="*10)
+        print(result["messages"][-1].content)
+        print("="*10+"Amadeus message"+"="*10)
+        question = input()
 
-message = HumanMessage(content="你好，你是谁，你知道我现在在干什么吗?可以截屏查看哦。")
-result = Amadeus.invoke({
-    "messages":[message]
-})
-print("="*20)
-print(result["messages"][-1].content)
 
 
 
