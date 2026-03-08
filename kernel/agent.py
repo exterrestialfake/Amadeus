@@ -7,7 +7,7 @@ from io import BytesIO
 from IPython.display import Image, display
 
 from langchain_openai import ChatOpenAI
-from langchain.tools import tool
+from langchain.tools import tool, ToolRuntime
 from langchain_core.messages import SystemMessage, ToolMessage, HumanMessage
 from langgraph.graph import MessagesState, StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver #暂时保存在内存中
@@ -22,7 +22,6 @@ def api_get(model_name):
     return config
 config= api_get("gemini")
 
-
 # LLM绑定
 servant = ChatOpenAI(
     model="gemini-2.5-flash",
@@ -35,19 +34,25 @@ servant = ChatOpenAI(
 # 定义状态模式
 class GraphState(MessagesState):
     summary:str
+    screen_permission:int
 
 # 配置工具函数
 @tool
-def capture_master_screen():
+def capture_master_screen(state:GraphState):
     """
     当你想要知道master在干什么时，可以调用此工具截图master的当前活动窗口，
     来理解master在干什么
     """
-    # =====判断当前活动窗口并截取=====
-    active_win = gw.getActiveWindow()
-    if active_win:
-        bbox = (active_win.left, active_win.top, active_win.right, active_win.bottom)
-        screenshot = ImageGrab.grab(bbox)
+    # =====截取窗口/屏幕=====
+    # ======低权限(screen_permission=0)时，只截取当前活动窗口======
+    if state["screen_permission"] == 0:
+        active_win = gw.getActiveWindow()
+        if active_win:
+            bbox = (active_win.left, active_win.top, active_win.right, active_win.bottom)
+            screenshot = ImageGrab.grab(bbox)
+        else:
+            return None
+    # ======高权限(screen_permission=1)时，截取全屏======
     else:
         screenshot = ImageGrab.grab()
     # ======对截图进行处理以节省token，并转为base64=====
@@ -85,6 +90,7 @@ def tool_node(state:GraphState):
     """
     工具节点，负责调用工具
     """
+    # =====调用工具===== 
     result = []
     last_message = state["messages"][-1]
     for tool_call in last_message.tool_calls:
@@ -93,20 +99,26 @@ def tool_node(state:GraphState):
         tool_args = tool_call["args"]
         observation = tool.invoke(tool_args)
         if tool_name == "capture_master_screen":
-            # =====构建toolMessage返回=====
-            tool_return = [
-                {"type":"text", "text":"screen successfully"}
-            ]
-            result.append(ToolMessage(content=tool_return, tool_call_id=tool_call["id"]))
-            # =====构建截屏HumanMessage返回，让模型读取=====
-            fake_humanMessage = HumanMessage(content=[
-                {"type":"text", "text":"这是master的屏幕截图"},
-                {
-                "type":"image",
-                "base64":f"{observation}",
-                "mime_type":"image/jpeg"}
-            ])
-            result.append(fake_humanMessage)
+            if observation is not None:
+                # =====构建toolMessage返回=====
+                tool_return = [
+                    {"type":"text", "text":"screen successfully"}
+                ]
+                result.append(ToolMessage(content=tool_return, tool_call_id=tool_call["id"]))
+                # =====构建截屏HumanMessage返回，让模型读取=====
+                fake_humanMessage = HumanMessage(content=[
+                    {"type":"text", "text":"这是master的屏幕截图"},
+                    {
+                    "type":"image",
+                    "base64":f"{observation}",
+                    "mime_type":"image/jpeg"}
+                ])
+                result.append(fake_humanMessage)
+            else:
+                tool_return = [
+                    {"type":"text", "text":"screen failed"}
+                ]
+                result.append(ToolMessage(content=tool_return, tool_call_id=tool_call["id"]))
         result.append(ToolMessage(content=observation,tool_call_id=tool_call["id"]))
     return {"messages":result}
 
@@ -144,42 +156,13 @@ Amadeus = Amadeus_builder.compile(checkpointer=shortMemory)
 # with open(graph_location, "wb") as f:
 #     f.write(Amadeus.get_graph(xray=True).draw_mermaid_png())
 if __name__ == "__main__":
-   
-    # def path_to_base64_url(path):
-    #     """自动判断是路径还是链接，如果是本地路径则转为 Base64 URL"""
-    #     if os.path.isfile(path):
-    #         with open(path, "rb") as f:
-    #             ext = os.path.splitext(path)[1].replace(".", "")
-    #             if ext == "jpg": ext = "jpeg"
-    #             encoded = base64.b64encode(f.read()).decode("utf-8")
-    #         return encoded, f"image/{ext}"
-    #     return path # 如果不是文件，原样返回（比如已经已经是 http 链接了）
-
-    # image_path = "D:\\Document\\project\\Amadeus\\kernel\\test_image.png"
-    # result = Amadeus.invoke(
-    #     {"messages":[{
-    #             "role":"user", 
-    #             "content":
-    #             [
-    #                 {"type":"text", "text":"你好，帮我分析以下图片"},
-    #                 {
-    #                     "type":"image", 
-    #                     "base64":path_to_base64_url(image_path)[0],
-    #                     "mime_type":path_to_base64_url(image_path)[1]
-    #                 }
-    #             ]
-    #         }]
-    #     },
-    #     {"configurable":{"thread_id":"lab_test"}}
-    # )
-    # print(result["messages"][-1].content)
 
     print("请输入问题，输入“晚安”结束对话")
-    question = "你好，你是谁?"
+    question = "你好，你是谁,看看我在干什么?"
     while question != "晚安":
         message = {"role":"user", "content":question}
         result = Amadeus.invoke(
-            {"messages":[message]},
+            {"messages":[message], "screen_permission":1},
             {"configurable":{"thread_id":"lab_test"}}
         )
         print("="*10+"Amadeus message"+"="*10)
