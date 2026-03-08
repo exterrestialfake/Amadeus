@@ -12,26 +12,23 @@ from langchain_core.messages import SystemMessage, ToolMessage, HumanMessage
 from langgraph.graph import MessagesState, StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver #暂时保存在内存中
 
+
 # 获取指定模型的api
 def api_get(model_name):
     current_file = os.path.dirname(__file__)
     config_file = os.path.join(current_file, "api.json")
     with open(config_file) as f:
         config = json.load(f)[model_name]
-    return config["api_key"], config["group_id"]
-api_key, group_id = api_get("minimax")
+    return config
+config= api_get("gemini")
 
 
 # LLM绑定
 servant = ChatOpenAI(
-    model="abab6.5-chat",
-    api_key=api_key,
-    base_url="https://api.minimax.chat/v1",
-    default_headers={
-        "Authorization": f"Bearer {api_key}",
-        "group-id": group_id
-    },
-    max_tokens=800,
+    model="gemini-2.5-flash",
+    api_key=config["api_key"],
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+    max_tokens=1000,
     temperature=0.4
 )
 
@@ -96,13 +93,20 @@ def tool_node(state:GraphState):
         tool_args = tool_call["args"]
         observation = tool.invoke(tool_args)
         if tool_name == "capture_master_screen":
-            # =====构建多模态消息=====
-            observation = [
-                {"type":"text", "text":"这是master屏幕截图"},
-                {"type":"image_url",
-                 "image_url":{
-                    "url":f"data:image/jpeg;base64,{observation}"}}
+            # =====构建toolMessage返回=====
+            tool_return = [
+                {"type":"text", "text":"screen successfully"}
             ]
+            result.append(ToolMessage(content=tool_return, tool_call_id=tool_call["id"]))
+            # =====构建截屏HumanMessage返回，让模型读取=====
+            fake_humanMessage = HumanMessage(content=[
+                {"type":"text", "text":"这是master的屏幕截图"},
+                {
+                "type":"image",
+                "base64":f"{observation}",
+                "mime_type":"image/jpeg"}
+            ])
+            result.append(fake_humanMessage)
         result.append(ToolMessage(content=observation,tool_call_id=tool_call["id"]))
     return {"messages":result}
 
@@ -140,12 +144,38 @@ Amadeus = Amadeus_builder.compile(checkpointer=shortMemory)
 # with open(graph_location, "wb") as f:
 #     f.write(Amadeus.get_graph(xray=True).draw_mermaid_png())
 if __name__ == "__main__":
-    # message = HumanMessage(content="你好，你是谁，你知道我现在在干什么吗?可以截屏查看哦。")
-    # result = Amadeus.invoke({
-    #     "messages":[message]
-    # })
+   
+    # def path_to_base64_url(path):
+    #     """自动判断是路径还是链接，如果是本地路径则转为 Base64 URL"""
+    #     if os.path.isfile(path):
+    #         with open(path, "rb") as f:
+    #             ext = os.path.splitext(path)[1].replace(".", "")
+    #             if ext == "jpg": ext = "jpeg"
+    #             encoded = base64.b64encode(f.read()).decode("utf-8")
+    #         return encoded, f"image/{ext}"
+    #     return path # 如果不是文件，原样返回（比如已经已经是 http 链接了）
+
+    # image_path = "D:\\Document\\project\\Amadeus\\kernel\\test_image.png"
+    # result = Amadeus.invoke(
+    #     {"messages":[{
+    #             "role":"user", 
+    #             "content":
+    #             [
+    #                 {"type":"text", "text":"你好，帮我分析以下图片"},
+    #                 {
+    #                     "type":"image", 
+    #                     "base64":path_to_base64_url(image_path)[0],
+    #                     "mime_type":path_to_base64_url(image_path)[1]
+    #                 }
+    #             ]
+    #         }]
+    #     },
+    #     {"configurable":{"thread_id":"lab_test"}}
+    # )
+    # print(result["messages"][-1].content)
+
     print("请输入问题，输入“晚安”结束对话")
-    question = "你好，你是谁？你知道我正在做什么吗？"
+    question = "你好，你是谁?"
     while question != "晚安":
         message = {"role":"user", "content":question}
         result = Amadeus.invoke(
