@@ -20,13 +20,13 @@ def api_get(model_name):
     with open(config_file) as f:
         config = json.load(f)[model_name]
     return config
-config= api_get("gemini")
+config= api_get("moda")
 
 # LLM绑定
 servant = ChatOpenAI(
-    model="gemini-2.5-flash",
+    model="moonshotai/Kimi-K2.5",
     api_key=config["api_key"],
-    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+    base_url=config["base_url"],
     max_tokens=1000,
     temperature=0.4
 )
