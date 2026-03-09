@@ -1,3 +1,4 @@
+
 import json
 import os
 from PIL import ImageGrab
@@ -7,8 +8,9 @@ from io import BytesIO
 from IPython.display import Image, display
 
 from langchain_openai import ChatOpenAI
-from langchain.tools import tool, ToolRuntime
+from langchain.tools import tool
 from langchain_core.messages import SystemMessage, ToolMessage, HumanMessage
+from langchain_core.runnables import RunnableConfig
 from langgraph.graph import MessagesState, StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver #暂时保存在内存中
 
@@ -34,18 +36,18 @@ servant = ChatOpenAI(
 # 定义状态模式
 class GraphState(MessagesState):
     summary:str
-    screen_permission:int
+
 
 # 配置工具函数
 @tool
-def capture_master_screen(state:GraphState):
+def capture_master_screen(config:RunnableConfig):
     """
     当你想要知道master在干什么时，可以调用此工具截图master的当前活动窗口，
     来理解master在干什么
     """
     # =====截取窗口/屏幕=====
     # ======低权限(screen_permission=0)时，只截取当前活动窗口======
-    if state["screen_permission"] == 0:
+    if config.get("configurable").get("screen_permission") == 0:
         active_win = gw.getActiveWindow()
         if active_win:
             bbox = (active_win.left, active_win.top, active_win.right, active_win.bottom)
@@ -86,7 +88,7 @@ def amadeus_node(state:GraphState):
             ]
         }
 
-def tool_node(state:GraphState):
+def tool_node(state:GraphState, config:RunnableConfig):
     """
     工具节点，负责调用工具
     """
@@ -97,7 +99,8 @@ def tool_node(state:GraphState):
         tool_name = tool_call["name"]
         tool = tool_box[tool_name]
         tool_args = tool_call["args"]
-        observation = tool.invoke(tool_args)
+        print(tool_args)
+        observation = tool.invoke(tool_args, config)
         if tool_name == "capture_master_screen":
             if observation is not None:
                 # =====构建toolMessage返回=====
@@ -119,7 +122,8 @@ def tool_node(state:GraphState):
                     {"type":"text", "text":"screen failed"}
                 ]
                 result.append(ToolMessage(content=tool_return, tool_call_id=tool_call["id"]))
-        result.append(ToolMessage(content=observation,tool_call_id=tool_call["id"]))
+        else:
+            result.append(ToolMessage(content=observation,tool_call_id=tool_call["id"]))
     return {"messages":result}
 
 def decider_function(state:GraphState):
@@ -158,12 +162,12 @@ Amadeus = Amadeus_builder.compile(checkpointer=shortMemory)
 if __name__ == "__main__":
 
     print("请输入问题，输入“晚安”结束对话")
-    question = "你好，你是谁,看看我在干什么?"
+    question = "你好，你知道我在干什么吗"
     while question != "晚安":
         message = {"role":"user", "content":question}
         result = Amadeus.invoke(
-            {"messages":[message], "screen_permission":1},
-            {"configurable":{"thread_id":"lab_test"}}
+            {"messages":[message]},
+            {"configurable":{"thread_id":"lab_test", "screen_permission":"1"}},
         )
         print("="*10+"Amadeus message"+"="*10)
         print(result["messages"][-1].content)
