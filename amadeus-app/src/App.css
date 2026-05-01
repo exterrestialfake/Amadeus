@@ -1,0 +1,148 @@
+/* 全局基础设置与变量 */
+:root {
+  --sidebar-width: 200px;
+  /* 左侧栏宽度 */
+  --character-width: 250px;
+  /* 右侧立绘区宽度 */
+  --bg-color: #f0f2f5;
+  /* 整体背景色 */
+  --accent-color: #396cd8;
+  /* 主题点缀色 */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  /* 玻璃质感背景 */
+  --text-color: #0f0f0f;
+  /* 文字颜色 */
+
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+/* 适配暗黑模式 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #1a1a1b;
+    --glass-bg: rgba(30, 30, 30, 0.8);
+    --text-color: #ffffff;
+  }
+}
+
+body,
+html,
+#root {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  /* 防止整个页面出现滚动条 */
+  color: var(--text-color);
+}
+
+/* ----------------------------------------------------
+   App 主容器（关键布局：CSS Grid）
+   ---------------------------------------------------- */
+.app-container {
+  display: grid;
+  /* 定义三列的宽度 */
+  grid-template-columns: var(--sidebar-width) 1fr var(--character-width);
+  /* 定义单行布局，让主区域内部自己处理上下排列 */
+  grid-template-rows: 1fr;
+  /* 命名区域 */
+  grid-template-areas:
+    "sidebar main character";
+
+  height: 100vh;
+  gap: 15px;
+  /* 各个面板之间的空隙 */
+  padding: 15px;
+  background-color: var(--bg-color);
+  box-sizing: border-box;
+}
+
+/* 所有的面板通用样式：玻璃拟态质感 */
+.sidebar,
+.output-panel,
+.input-panel,
+.character-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  /* 磨砂玻璃效果 */
+  border-radius: 16px;
+  /* 圆角 */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  /* 柔和阴影 */
+}
+
+/* ====================================================
+   区域划分定义
+   ==================================================== */
+
+/* 1. 左侧边栏 */
+.sidebar {
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.history-panel {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.config-button {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: transform 0.2s;
+}
+
+.config-button:hover {
+  transform: scale(1.05);
+}
+
+/* 2. 中间主区域（分为消息显示区 和 输入区） */
+.main-content {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* 隐藏主区域外部滚动 */
+}
+
+.placeholder-text {
+  text-align: center;
+  color: #888;
+  margin-top: 50px;
+}
+
+/* 3. 右侧预留的完整形象面板 */
+.character-panel {
+  grid-area: character;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ====================================================
+   响应式调整（小屏幕下自动折叠）
+   ==================================================== */
+@media (max-width: 800px) {
+  .app-container {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "main"
+      "footer";
+  }
+
+  .sidebar,
+  .character-panel {
+    display: none;
+    /* 屏幕太小时隐藏侧边栏和形象 */
+  }
+}

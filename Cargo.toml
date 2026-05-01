@@ -1,0 +1,2 @@
+[workspace]
+members = ["amadeus-app/src-tauri"]

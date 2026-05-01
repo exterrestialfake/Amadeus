@@ -10,7 +10,17 @@ __pycache__/
 env/
 venv/
 
-# 排除你的 API 密钥文件 (保护隐私，不要上传到 GitHub/GitLab)
-kernel/api.json
+# 排除语音模型
+kernel/voice/models
+
+# 排除API 密钥文件 (保护隐私，不要上传到 GitHub/GitLab)
+kernel/config/api.json
+kernel/config/config.json
+
+# 排除日志
+logs/
+
+#
+/target/
 
 

@@ -1,18 +1,50 @@
-from agent import Amadeus, ContextSchema
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
+from pydantic import BaseModel
+from agent import ContextSchema, init_amadeus
+import sys
+import os
+
+from config.logging_Setup import setup_logging
+print(sys.path[0])
+# 配置日志
+setup_logging()
+
+
+Amadeus = None
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """服务器启动时预加载 AI 模型，防止需要第一次调用才加载模型"""
+    global Amadeus
+    Amadeus = await init_amadeus()
+    yield
+    # 服务关闭时在此做清理（如有需要）
+    Amadeus = None
+app = FastAPI(title="Amadeus Core API", lifespan=lifespan)
+
+
+# 输入与输出类
+class InvokeRequest(BaseModel):
+    prompt: str
+    user_name: str = "christina"
+
+class InvokeResponse(BaseModel):
+    response: str
+
+@app.post("/api/invoke", response_model=InvokeResponse)
+async def invoke_agent(req: InvokeRequest):
+    message = {"role": "user", "content": req.prompt}
+    
+    result = await Amadeus.ainvoke(
+        {"messages": [message]},
+        {"configurable": {"thread_id": "lab_test", "screen_permission": "1"}},
+        context=ContextSchema(user_name=req.user_name, memory_mode=True)
+    )
+    
+    reply = result["messages"][-1].content
+    return InvokeResponse(response=reply)
 
 if __name__ == "__main__":
-
-    print("请输入问题，输入“晚安”结束对话")
-    question = "你好，我的名字是什么？你应当知道的"
-    while question != "晚安":
-        message = {"role":"user", "content":question}
-        result = Amadeus.invoke(
-            {"messages":[message]},
-            {"configurable":{"thread_id":"lab_test", "screen_permission":"1"}},
-            context=ContextSchema(user_name="christina", memory_mode=True)
-        )
-        print("="*10+"Amadeus message"+"="*10)
-        print(result["messages"][-1].content)
-        print("="*10+"Amadeus message"+"="*10)
-        question = input()
-
+    import uvicorn
+    # 本地启动FastAPI服务器
+    uvicorn.run("invoke:app", host="127.0.0.1", port=8000, reload=True)

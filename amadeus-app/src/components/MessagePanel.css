@@ -1,0 +1,126 @@
+/* 消息显示主容器 */
+.output-panel {
+    flex-grow: 1;
+    padding: 30px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    /* 消息之间的间距 */
+    scroll-behavior: smooth;
+}
+
+/* --- AI 消息布局 --- */
+.AIMessage-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    align-self: flex-start;
+    max-width: 85%;
+    animation: slideInLeft 0.3s ease-out;
+}
+
+.AIMessage-bubble {
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    padding: 14px 20px;
+    border-radius: 4px 18px 18px 18px;
+    /* 独特的对话气泡圆角 */
+    line-height: 1.6;
+    color: var(--text-color);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 1rem;
+    word-break: break-all;
+}
+
+/* --- 用户消息布局 --- */
+.UserMessage-row {
+    display: flex;
+    justify-content: flex-end;
+    align-self: flex-end;
+    max-width: 85%;
+    animation: slideInRight 0.3s ease-out;
+}
+
+.UserMessage-bubble {
+    background: linear-gradient(135deg, var(--accent-color), #2a52be);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 18px 18px 4px 18px;
+    /* 用户气泡圆角 */
+    line-height: 1.5;
+    box-shadow: 0 4px 12px rgba(57, 108, 216, 0.2);
+    font-size: 1rem;
+    word-break: break-all;
+}
+
+/* 头像样式 */
+.avatar-img {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 输入区域布局：移除外部 margin 以对齐底端 */
+.input-panel {
+    padding: 20px 30px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    /* 移除外部 margin，使其贴合 main-content 底部 */
+    margin: 15px 0px 0px 0px;
+    border-radius: 16px;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.03);
+}
+
+#chat-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 8px;
+    font-size: 1.05rem;
+    outline: none;
+    color: var(--text-color);
+    resize: none;
+    /* 禁止手动拉伸 */
+    min-height: 24px;
+    max-height: 150px;
+    /* 超过此高度即出现滚动条 */
+    overflow-y: auto;
+    font-family: inherit;
+    line-height: 1.5;
+    transition: all 0.2s;
+}
+
+#chat-input::placeholder {
+    color: rgba(136, 136, 136, 0.5);
+}
+
+/* 进场动画 */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
