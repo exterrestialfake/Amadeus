@@ -17,6 +17,7 @@ from langgraph.store.postgres import PostgresStore
 
 from tools import load_mcp_tools, capture_master_screen
 from loguru import logger
+from utils import load_file
 
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), "./config/config.json")
 
@@ -74,7 +75,7 @@ def memory_module(memory_mode: bool):
             )
             store = PostgresStore(pool, index={"dims": 384, "embed": embeddings})
         except Exception as e:
-            logger.error("[AMADEUS]:记忆模块运行失败，{e}")
+            logger.error(f"[AMADEUS]:记忆模块运行失败，{e}")
         logger.info("[AMADEUS]:记忆模块运行成功")
         return store
     else:
@@ -85,13 +86,9 @@ def memory_module(memory_mode: bool):
 # ===== 节点函数（标准签名，amadeus/tool_box 通过 partial 提前注入）=====
 async def amadeus_node(amadeus, state: GraphState, runtime: Runtime):
     """amadeus节点，负责调用llm"""
-    base_indentity = (
-        "你是动漫《命运石之门》之中的牧濑红莉栖，"
-        "我是你的master,请你以后用她的语气和口吻与我对话，并在表达一段话之前用()涵盖语气词，如(生气)，(好奇)"
-        "你拥有权限，可以随便使用截屏工具。"
-        "你需要在回复末尾包含标识符[MEMORY:TRUE]或者[MEMORY:FALSE]来告诉是否需要将本次对话保存长期记忆"
-        "你应当记住的是关于master的信息偏好与master最近在忙的较大型工作与心情，琐事(譬如屏幕截图，购买食物的相关消息)不需要记忆"
-    )
+    prompt_path = os.path.join(os.getcwd(), "kernel/config/Prompt.md")
+    prompt = load_file(prompt_path)
+    base_indentity = prompt
     memory_mode = runtime.context.memory_mode
     memory_get = ""
     if memory_mode:

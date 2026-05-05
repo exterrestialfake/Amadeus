@@ -1,5 +1,8 @@
 import { useState } from "react";
 import "./MessagePanel.css"
+import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
+
 
 // 消息的数据结构
 export type Message = {
@@ -25,7 +28,9 @@ export const OutputPanel: React.FC<OutputPanelProps> = ({ messages }) => {
                         <img src="/christina.svg" className="avatar-img" alt="christina" />
                     </div>
                     <div className="AIMessage-bubble">
-                        {msg.content}
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                            {msg.content}
+                        </ReactMarkdown >
                     </div>
                 </div>
             );

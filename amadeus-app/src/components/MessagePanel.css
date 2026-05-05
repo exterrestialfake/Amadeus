@@ -34,6 +34,20 @@
     word-break: break-all;
 }
 
+/* 清除 Markdown 生成的段落默认边距，改为我们想要的间距 */
+.AIMessage-bubble p {
+    margin: 0 0 3px 0;
+    /* 仅在段落下方留出 10px 间距 */
+}
+
+/* 最后一个段落不需要下边距 */
+.AIMessage-bubble p:last-child {
+    margin-bottom: 0;
+}
+
+
+
+
 /* --- 用户消息布局 --- */
 .UserMessage-row {
     display: flex;
