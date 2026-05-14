@@ -166,3 +166,309 @@
 2026-05-05 23:02:51.497 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
 2026-05-05 23:03:25.651 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
 2026-05-05 23:03:29.947 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-06 15:39:07.041 | INFO     | agent:memory_module:54 - [AMADEUS]:尝试运行记忆模块...
+2026-05-06 15:39:25.678 | INFO     | agent:memory_module:79 - [AMADEUS]:记忆模块运行成功
+2026-05-06 15:39:25.681 | INFO     | agent:init_amadeus:209 - [AMADEUS]:核心模型加载完毕，服务就绪。
+2026-05-06 15:39:49.101 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-06 15:39:51.961 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-06 15:40:01.073 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-06 15:40:03.284 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-06 15:40:03.288 | INFO     | agent:tool_node:129 - [AMADEUS]:尝试执行工具list_allowed_directories
+2026-05-06 15:40:10.229 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-06 15:40:12.010 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-06 15:40:12.013 | INFO     | agent:tool_node:129 - [AMADEUS]:尝试执行工具list_directory
+2026-05-06 15:40:18.526 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-06 15:40:20.527 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-06 15:40:49.644 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-06 15:40:52.192 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-06 15:40:52.196 | INFO     | agent:tool_node:129 - [AMADEUS]:尝试执行工具read_media_file
+2026-05-06 15:40:59.067 | ERROR    | agent:tool_node:133 - [AMADEUS]:工具执行失败: MCP error -32602: Invalid tools/call result: [
+  {
+    "code": "invalid_union",
+    "errors": [
+      [
+        {
+          "code": "invalid_value",
+          "values": [
+            "text"
+          ],
+          "path": [
+            "type"
+          ],
+          "message": "Invalid input: expected \"text\""
+        },
+        {
+          "expected": "string",
+          "code": "invalid_type",
+          "path": [
+            "text"
+          ],
+          "message": "Invalid input: expected string, received undefined"
+        }
+      ],
+      [
+        {
+          "code": "invalid_value",
+          "values": [
+            "image"
+          ],
+          "path": [
+            "type"
+          ],
+          "message": "Invalid input: expected \"image\""
+        }
+      ],
+      [
+        {
+          "code": "invalid_value",
+          "values": [
+            "audio"
+          ],
+          "path": [
+            "type"
+          ],
+          "message": "Invalid input: expected \"audio\""
+        }
+      ],
+      [
+        {
+          "expected": "string",
+          "code": "invalid_type",
+          "path": [
+            "name"
+          ],
+          "message": "Invalid input: expected string, received undefined"
+        },
+        {
+          "expected": "string",
+          "code": "invalid_type",
+          "path": [
+            "uri"
+          ],
+          "message": "Invalid input: expected string, received undefined"
+        },
+        {
+          "code": "invalid_value",
+          "values": [
+            "resource_link"
+          ],
+          "path": [
+            "type"
+          ],
+          "message": "Invalid input: expected \"resource_link\""
+        }
+      ],
+      [
+        {
+          "code": "invalid_value",
+          "values": [
+            "resource"
+          ],
+          "path": [
+            "type"
+          ],
+          "message": "Invalid input: expected \"resource\""
+        },
+        {
+          "code": "invalid_union",
+          "errors": [
+            [
+              {
+                "expected": "object",
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected object, received undefined"
+              }
+            ],
+            [
+              {
+                "expected": "object",
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected object, received undefined"
+              }
+            ]
+          ],
+          "path": [
+            "resource"
+          ],
+          "message": "Invalid input"
+        }
+      ]
+    ],
+    "path": [
+      "content",
+      0
+    ],
+    "message": "Invalid input"
+  }
+]
+2026-05-06 15:40:59.095 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-06 15:41:01.152 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-06 15:41:01.158 | INFO     | agent:tool_node:129 - [AMADEUS]:尝试执行工具search_files
+2026-05-06 15:41:13.787 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-06 15:41:16.497 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-06 15:41:37.887 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-06 15:41:41.963 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-06 15:42:14.727 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-06 15:42:23.069 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-06 15:43:48.227 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-06 15:43:52.851 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-06 20:19:48.444 | INFO     | agent:memory_module:54 - [AMADEUS]:尝试运行记忆模块...
+2026-05-06 20:19:54.314 | ERROR    | agent:memory_module:78 - [AMADEUS]:记忆模块运行失败，Cannot send a request, as the client has been closed.
+2026-05-06 20:19:54.316 | INFO     | agent:memory_module:79 - [AMADEUS]:记忆模块运行成功
+2026-05-06 20:19:54.317 | WARNING  | invoke:lifespan:24 - Amadeus agent连接失败，次数：1
+2026-05-06 20:19:54.317 | INFO     | agent:init_amadeus:179 - [AMADEUS]:正在加载 Amadeus 核心模型，请稍候...
+2026-05-06 20:20:08.654 | INFO     | agent:memory_module:54 - [AMADEUS]:尝试运行记忆模块...
+2026-05-06 20:20:14.942 | INFO     | agent:memory_module:79 - [AMADEUS]:记忆模块运行成功
+2026-05-06 20:20:14.944 | INFO     | agent:init_amadeus:210 - [AMADEUS]:核心模型加载完毕，服务就绪。
+2026-05-06 20:22:28.764 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-06 20:22:30.693 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-08 08:41:12.601 | INFO     | agent:memory_module:54 - [AMADEUS]:尝试运行记忆模块...
+2026-05-08 08:41:22.281 | INFO     | agent:memory_module:79 - [AMADEUS]:记忆模块运行成功
+2026-05-08 08:41:22.283 | INFO     | agent:init_amadeus:210 - [AMADEUS]:核心模型加载完毕，服务就绪。
+2026-05-08 08:41:51.424 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-08 08:41:53.471 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-08 08:42:07.096 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-08 08:42:12.565 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-11 16:05:55.883 | ERROR    | tools.tools:load_mcp_tools:54 - [AMADEUS]: MCP报错的详细错误堆栈：
+Traceback (most recent call last):
+  File "D:\Document\project\Amadeus\kernel\tools\tools.py", line 47, in load_mcp_tools
+    with open(CONFIG_PATH, "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'D:\\Document\\project\\Amadeus\\kernel\\tools\\config/config.json'
+
+2026-05-11 16:05:55.887 | INFO     | agent:memory_module:54 - [AMADEUS]:尝试运行记忆模块...
+2026-05-11 16:06:14.206 | INFO     | agent:memory_module:79 - [AMADEUS]:记忆模块运行成功
+2026-05-11 16:06:14.208 | INFO     | agent:init_amadeus:210 - [AMADEUS]:核心模型加载完毕，服务就绪。
+2026-05-11 16:06:18.923 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 16:06:21.576 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-11 17:42:34.516 | ERROR    | tools.tools:load_mcp_tools:54 - [AMADEUS]: MCP报错的详细错误堆栈：
+Traceback (most recent call last):
+  File "D:\Document\project\Amadeus\kernel\tools\tools.py", line 47, in load_mcp_tools
+    with open(CONFIG_PATH, "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'D:\\Document\\project\\Amadeus\\kernel\\tools\\config/config.json'
+
+2026-05-11 17:42:34.520 | INFO     | agent:memory_module:54 - [AMADEUS]:尝试运行记忆模块...
+2026-05-11 17:42:47.341 | INFO     | agent:memory_module:79 - [AMADEUS]:记忆模块运行成功
+2026-05-11 17:42:47.344 | INFO     | agent:init_amadeus:210 - [AMADEUS]:核心模型加载完毕，服务就绪。
+2026-05-11 17:44:39.334 | INFO     | agent:memory_module:54 - [AMADEUS]:尝试运行记忆模块...
+2026-05-11 17:44:46.743 | INFO     | agent:memory_module:79 - [AMADEUS]:记忆模块运行成功
+2026-05-11 17:44:46.745 | INFO     | agent:init_amadeus:210 - [AMADEUS]:核心模型加载完毕，服务就绪。
+2026-05-11 17:44:47.424 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 17:44:49.391 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-11 17:44:49.395 | INFO     | agent:tool_node:129 - [AMADEUS]:尝试执行工具list_allowed_directories
+2026-05-11 17:45:03.469 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 17:45:04.992 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-11 17:45:04.994 | INFO     | agent:tool_node:129 - [AMADEUS]:尝试执行工具list_directory
+2026-05-11 17:45:06.323 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 17:45:10.141 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-11 17:46:03.374 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 17:46:05.432 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-11 17:46:05.434 | INFO     | agent:tool_node:129 - [AMADEUS]:尝试执行工具read_file
+2026-05-11 17:46:06.708 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 17:46:09.958 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-11 17:47:11.379 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 17:47:20.829 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-11 17:49:05.071 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 17:49:14.373 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-11 17:49:48.456 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 17:49:57.263 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-11 17:50:27.087 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 17:50:36.566 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-11 17:51:15.150 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 17:51:24.776 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-11 17:51:51.590 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 17:52:04.575 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-11 17:57:16.616 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 17:57:20.232 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-11 18:47:56.123 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 18:47:58.818 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-11 18:47:58.827 | INFO     | agent:tool_node:129 - [AMADEUS]:尝试执行工具read_media_file
+2026-05-11 18:48:13.101 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 18:51:16.500 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 18:53:32.796 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 19:14:58.468 | INFO     | agent:memory_module:54 - [AMADEUS]:尝试运行记忆模块...
+2026-05-11 19:15:09.388 | INFO     | agent:memory_module:79 - [AMADEUS]:记忆模块运行成功
+2026-05-11 19:15:09.390 | INFO     | agent:init_amadeus:211 - [AMADEUS]:核心模型加载完毕，服务就绪。
+2026-05-11 19:15:10.131 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 19:15:13.005 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-11 19:15:13.010 | INFO     | agent:tool_node:129 - [AMADEUS]:尝试执行工具capture_master_screen
+2026-05-11 19:15:13.139 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 19:15:15.197 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-11 19:15:41.127 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 19:15:43.644 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-11 19:16:06.016 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 19:16:08.949 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-11 19:16:33.385 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-11 19:16:36.557 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-12 16:09:18.823 | INFO     | agent:memory_module:54 - [AMADEUS]:尝试运行记忆模块...
+2026-05-12 16:09:30.675 | INFO     | agent:memory_module:79 - [AMADEUS]:记忆模块运行成功
+2026-05-12 16:09:30.678 | INFO     | agent:init_amadeus:211 - [AMADEUS]:核心模型加载完毕，服务就绪。
+2026-05-12 16:10:07.221 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 16:23:38.147 | INFO     | agent:memory_module:54 - [AMADEUS]:尝试运行记忆模块...
+2026-05-12 16:23:53.860 | INFO     | agent:memory_module:79 - [AMADEUS]:记忆模块运行成功
+2026-05-12 16:23:53.863 | INFO     | agent:init_amadeus:211 - [AMADEUS]:核心模型加载完毕，服务就绪。
+2026-05-12 16:23:58.535 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 16:28:45.547 | INFO     | agent:memory_module:54 - [AMADEUS]:尝试运行记忆模块...
+2026-05-12 16:28:59.348 | INFO     | agent:memory_module:79 - [AMADEUS]:记忆模块运行成功
+2026-05-12 16:28:59.352 | INFO     | agent:init_amadeus:211 - [AMADEUS]:核心模型加载完毕，服务就绪。
+2026-05-12 16:29:40.770 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 16:34:49.942 | INFO     | agent:memory_module:54 - [AMADEUS]:尝试运行记忆模块...
+2026-05-12 16:35:02.058 | INFO     | agent:memory_module:79 - [AMADEUS]:记忆模块运行成功
+2026-05-12 16:35:02.063 | INFO     | agent:init_amadeus:211 - [AMADEUS]:核心模型加载完毕，服务就绪。
+2026-05-12 16:35:05.590 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 23:12:59.918 | INFO     | agent:memory_module:54 - [AMADEUS]:尝试运行记忆模块...
+2026-05-12 23:16:28.937 | INFO     | agent:memory_module:54 - [AMADEUS]:尝试运行记忆模块...
+2026-05-12 23:18:12.538 | INFO     | agent:memory_module:54 - [AMADEUS]:尝试运行记忆模块...
+2026-05-12 23:18:23.228 | INFO     | agent:memory_module:79 - [AMADEUS]:记忆模块运行成功
+2026-05-12 23:18:23.233 | INFO     | agent:init_amadeus:211 - [AMADEUS]:核心模型加载完毕，服务就绪。
+2026-05-12 23:18:41.452 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 23:18:43.826 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-12 23:19:07.985 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 23:19:09.104 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-12 23:19:09.108 | INFO     | agent:tool_node:129 - [AMADEUS]:尝试执行工具capture_master_screen
+2026-05-12 23:19:09.291 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 23:19:11.020 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-12 23:19:44.197 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 23:19:46.944 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-12 23:20:07.867 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 23:20:11.104 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-12 23:20:37.092 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 23:20:39.847 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-12 23:20:39.852 | INFO     | agent:tool_node:129 - [AMADEUS]:尝试执行工具capture_master_screen
+2026-05-12 23:20:39.996 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 23:20:42.719 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-12 23:21:34.956 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 23:21:39.731 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-12 23:22:40.448 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 23:22:42.483 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-12 23:22:42.488 | INFO     | agent:tool_node:129 - [AMADEUS]:尝试执行工具capture_master_screen
+2026-05-12 23:22:42.633 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 23:22:45.629 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-12 23:28:00.485 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 23:28:04.826 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-12 23:30:24.728 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 23:30:28.072 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-12 23:43:29.412 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 23:43:31.959 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-12 23:43:31.969 | INFO     | agent:tool_node:129 - [AMADEUS]:尝试执行工具capture_master_screen
+2026-05-12 23:43:32.150 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 23:43:35.705 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-12 23:55:56.864 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 23:55:59.552 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-12 23:55:59.565 | INFO     | agent:tool_node:129 - [AMADEUS]:尝试执行工具capture_master_screen
+2026-05-12 23:55:59.738 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-12 23:56:03.162 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-13 00:07:46.146 | INFO     | agent:amadeus_node:109 - [AMADEUS]:等待回复...
+2026-05-13 00:07:49.575 | INFO     | agent:amadeus_node:118 - [AMADEUS]:已回复
+2026-05-13 15:54:58.178 | INFO     | agent:memory_module:54 - [AMADEUS]:尝试运行记忆模块...
+2026-05-13 15:55:13.578 | INFO     | agent:memory_module:79 - [AMADEUS]:记忆模块运行成功
+2026-05-13 15:55:13.581 | INFO     | agent:init_amadeus:211 - [AMADEUS]:核心模型加载完毕，服务就绪。
+2026-05-14 14:37:45.939 | INFO     | agent:memory_module:54 - [AMADEUS]:尝试运行记忆模块...
+2026-05-14 14:38:14.688 | INFO     | agent:memory_module:79 - [AMADEUS]:记忆模块运行成功
+2026-05-14 14:38:14.692 | INFO     | agent:init_amadeus:211 - [AMADEUS]:核心模型加载完毕，服务就绪。
+2026-05-14 16:34:57.217 | INFO     | agent:memory_module:54 - [AMADEUS]:尝试运行记忆模块...
+2026-05-14 16:35:08.819 | INFO     | agent:memory_module:79 - [AMADEUS]:记忆模块运行成功
+2026-05-14 16:35:08.822 | INFO     | agent:init_amadeus:211 - [AMADEUS]:核心模型加载完毕，服务就绪。

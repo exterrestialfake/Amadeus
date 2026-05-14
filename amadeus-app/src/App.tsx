@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { InputPanel, OutputPanel, Message } from "./components/MessagePanel";
+import CharacterPanel from "./components/CharacterPanel";
 import "./App.css";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
       setMessages(prev => [...prev, aiMsg]);
     } catch (error) {
       console.error("Failed to invoke:", error);
+      // setMessages(prev => [...prev, Message()]);
     }
   };
 
@@ -52,7 +54,7 @@ function App() {
       <aside className="character-panel">
         <div className="character-view">
           <h2>Amadeus 形象</h2>
-          <p>（预留给完整立绘）</p>
+          <CharacterPanel />
         </div>
       </aside>
     </div>

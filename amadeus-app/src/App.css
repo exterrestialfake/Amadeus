@@ -125,14 +125,26 @@ html,
   grid-area: character;
   padding: 20px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column; /* 改为纵向排列 */
+}
+
+.character-view {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.character-view h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 /* ====================================================
    响应式调整（小屏幕下自动折叠）
    ==================================================== */
-@media (max-width: 800px) {
+@media (max-width: 500px) {
   .app-container {
     grid-template-columns: 1fr;
     grid-template-areas:

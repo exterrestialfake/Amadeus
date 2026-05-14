@@ -10,7 +10,7 @@ from PIL import ImageGrab
 import pygetwindow as gw
 from loguru import logger
 
-CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config/config.json")
+CONFIG_PATH = os.path.join(os.path.dirname(__file__), "../config/config.json")
 
 @tool
 async def capture_master_screen(config: RunnableConfig):

@@ -15,7 +15,7 @@ from langgraph.runtime import Runtime
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.store.postgres import PostgresStore
 
-from tools import load_mcp_tools, capture_master_screen
+from tools.tools import load_mcp_tools, capture_master_screen
 from loguru import logger
 from utils import load_file
 
@@ -136,12 +136,13 @@ async def tool_node(tool_box: dict, state: GraphState, config: RunnableConfig):
                 # tool_call必须要有ToolMessage来接住，
                 # 但是大部分工具不能直接返回截图，因此用HumanMessage替代
                 result.append(ToolMessage(
-                    content=[{"type": "text", "text": "截图成功"}], 
+                    content=[{"type": "text", "text": "截图成功"},
+                             {"type": "image", "base64": observation, "mime_type": "image/jpeg"}], 
                     tool_call_id=tool_call["id"]))
-                result.append(HumanMessage(content=[
-                    {"type": "text", "text": "这是master的屏幕截图"},
-                    {"type": "image", "base64": observation, "mime_type": "image/jpeg"}
-                ]))
+                # result.append(HumanMessage(content=[
+                #     {"type": "text", "text": "这是master的屏幕截图"},
+                #     {"type": "image", "base64": observation, "mime_type": "image/jpeg"}
+                # ]))
             else:
                 result.append(ToolMessage(
                     content=[{"type": "text", "text": "截图失败"}], 
@@ -177,36 +178,39 @@ async def init_amadeus(memory_mode: bool = True):
     异步初始化：加载 MCP 工具 -> 绑定模型 -> 用 partial 注入依赖 -> 编译图
     """
     logger.info("[AMADEUS]:正在加载 Amadeus 核心模型，请稍候...")
-    # =====LLM=====
-    llm_config = api_get("moda")
-    servant = ChatOpenAI(
-        model=llm_config["model"],
-        api_key=llm_config["api_key"],
-        base_url=llm_config["base_url"],
-        temperature=0.4,
-        timeout=60,
-    )
-    # =====工具=====
-    tools = [capture_master_screen]
-    tools.extend(await load_mcp_tools())
-    tool_box = {t.name: t for t in tools}
-    amadeus = servant.bind_tools(tools)
-    # =====用 partial 把 amadeus/tool_box 提前绑进节点函数=====
-    # LangGraph 能看到的签名就只剩 (state, runtime/config)，完全合法
-    amadeusNode = partial(amadeus_node, amadeus)
-    toolNode = partial(tool_node, tool_box)
-    # =====构建图=====
-    shortMemory = MemorySaver()
-    builder = StateGraph(GraphState, context_schema=ContextSchema)
-    builder.add_node("amadeus_kernel", amadeusNode)
-    builder.add_node("tool", toolNode)
-    builder.add_node("put_memory", put_memory_node)
-    builder.add_edge(START, "amadeus_kernel")
-    builder.add_conditional_edges("amadeus_kernel", decider_function, {"tool": "tool", "next": "put_memory"})
-    builder.add_edge("tool", "amadeus_kernel")
-    builder.add_edge("put_memory", END)
-    amadeus = builder.compile(checkpointer=shortMemory, store=memory_module(memory_mode))
-    logger.info("[AMADEUS]:核心模型加载完毕，服务就绪。")
+    try:
+        # =====LLM=====
+        llm_config = api_get("moda")
+        servant = ChatOpenAI(
+            model=llm_config["model"],
+            api_key=llm_config["api_key"],
+            base_url=llm_config["base_url"],
+            temperature=0.4,
+            timeout=60,
+        )
+        # =====工具=====
+        tools = [capture_master_screen]
+        tools.extend(await load_mcp_tools())
+        tool_box = {t.name: t for t in tools}
+        amadeus = servant.bind_tools(tools)
+        # =====用 partial 把 amadeus/tool_box 提前绑进节点函数=====
+        # LangGraph 能看到的签名就只剩 (state, runtime/config)，完全合法
+        amadeusNode = partial(amadeus_node, amadeus)
+        toolNode = partial(tool_node, tool_box)
+        # =====构建图=====
+        shortMemory = MemorySaver()
+        builder = StateGraph(GraphState, context_schema=ContextSchema)
+        builder.add_node("amadeus_kernel", amadeusNode)
+        builder.add_node("tool", toolNode)
+        builder.add_node("put_memory", put_memory_node)
+        builder.add_edge(START, "amadeus_kernel")
+        builder.add_conditional_edges("amadeus_kernel", decider_function, {"tool": "tool", "next": "put_memory"})
+        builder.add_edge("tool", "amadeus_kernel")
+        builder.add_edge("put_memory", END)
+        amadeus = builder.compile(checkpointer=shortMemory, store=memory_module(memory_mode))
+        logger.info("[AMADEUS]:核心模型加载完毕，服务就绪。")
+    except Exception as e:
+        return None
     return amadeus
 
 

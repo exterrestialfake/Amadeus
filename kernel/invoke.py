@@ -6,6 +6,7 @@ import sys
 import os
 
 from config.logging_Setup import setup_logging
+from loguru import logger
 print(sys.path[0])
 # 配置日志
 setup_logging()
@@ -16,7 +17,15 @@ Amadeus = None
 async def lifespan(app: FastAPI):
     """服务器启动时预加载 AI 模型，防止需要第一次调用才加载模型"""
     global Amadeus
-    Amadeus = await init_amadeus()
+    connecting_time = 0
+    MAX_CONNECTIING_TIME = 5
+    while Amadeus is None and connecting_time <= MAX_CONNECTIING_TIME:
+        if connecting_time >=1:
+            logger.warning(f"Amadeus agent连接失败，次数：{connecting_time}")
+        elif connecting_time == MAX_CONNECTIING_TIME:
+            logger.error("Amadues创建失败，请检查网络后尝试")
+        Amadeus = await init_amadeus()
+        connecting_time += 1
     yield
     # 服务关闭时在此做清理（如有需要）
     Amadeus = None
